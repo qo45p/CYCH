@@ -1,0 +1,30 @@
+﻿
+@model CY_Project.ViewModels.PresentViewModel
+@{ 
+    ViewBag.title = "查找患者ID";
+ 
+}
+    
+
+        <div id="PatientForm" style="margin:0 auto;padding:20px;">
+
+            @using (Html.BeginForm("SearchPatient", "Home", FormMethod.Post, new { id = "SearchPatient" }))
+            {
+                <p>
+                    PatientId: @Html.DropDownListFor(model => model.P_ID_Value, Model.P_ID, new { @class = "form-control" })
+                </p>
+                <input type="submit" id="submit" class="btn btn-primary" value="送出" />
+            }
+
+
+        </div>
+
+    @*    <div id="container" style="min-width: 310px; height: 900px; margin: 0 auto"></div>*@
+
+
+
+    
+        
+    
+
+    

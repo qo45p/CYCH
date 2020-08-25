@@ -1,0 +1,492 @@
+﻿@model IEnumerable<CY_Project.ViewModels.PresentViewModel>
+
+@{
+    ViewBag.Title = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TokenSentance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DBP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SBP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BT_Max)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BT_TA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BT_X)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RR)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HR)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time13)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Med_Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dose)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedRecord_Content)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TokenSentance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DBP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SBP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BT_Max)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BT_TA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BT_X)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RR)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HR)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time13)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Med_Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dose)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedRecord_Content)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+
+    </table>*@
+
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/highcharts-more.js"></script>
+
+
+<div class="side-menu col-md-2">
+
+    <form class="row" style="margin-left:20px">
+        <input type="search" class="col-md-10" placeholder="請輸入關鍵字">
+        <button class="col-md-2"><i class="fas fa-search"></i></button>
+    </form>
+    <nav class="med_button" style="margin-left:40px">
+        @foreach (var item in Model)
+        {
+            <div>
+                <button type="button" class="btn btn-light" style="margin:2px">
+                    @Html.DisplayFor(modelItem => item.Med_Code)
+                </button>
+            </div>
+        }
+        <div>
+            <button type="button" class="btn btn-light" style="margin:2px">JaNUvia</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-light" style="margin:2px">Glucophage</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" style="margin:2px">Dormicum</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-light" style="margin:2px">Silvadene cream(Silva-sulfa)</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" style="margin:2px">MAXII</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" style="margin:2px">NS5</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-light" style="margin:2px">FENTI</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-light" style="margin:2px">DORM1</button>
+        </div>
+
+        <!-- <div>
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+                Default checkbox
+            </label>
+        </div>
+
+        <div>
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+            <label class="form-check-label" for="defaultCheck2">
+                Default checkbox2
+            </label>
+        </div> -->
+    </nav>
+    <label for="side-menu-switch">
+        <i class="fas fa-angle-right"></i>
+    </label>
+</div>
+
+<div id="section" class="col-md-10">
+    <div class="card info_card">
+        <div class="card-body row ">
+            <div class="col-md-3">姓名：</div>
+            <div class="col-md-3">性別：</div>
+            <div class="col-md-3">出生年月：</div>
+            <div class="col-md-3">年齡：</div>
+        </div>
+
+    </div>
+
+    <div class="card content_card ">
+        @*<h5 class="card-header">Chart</h5>*@
+        <div class="card-body">
+            <div class="chart-area" id="container" style="min-width: 310px; height: 900px; margin: 0 auto">
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Modal 點擊內文 MedRecord-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Medical Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="min-width: 300px">
+                    @*@foreach (var item in Model)
+                        {
+                            @Html.DisplayFor(modelItem => item.MedRecord_Content)<br />
+                        }*@
+                    Subjective<br />
+                    <br />
+                    one episode of vomitting this morning ( befor meal )<br />
+                    <br />
+                    Objective<br />
+                    <br />
+                    2018-08-02 07:50 V/S : BT36.3℃ ( 顳 ) ; HR 88次/分 ; RR 21次/分 ; NBP 107/ 70mmHg<br />
+                    Consciousness : clear Chest : breathing sounds : right basal rales smooth<br />
+                    respiratory pattern Abdomen : soft and mild distension hypoactive bowel sounds<br />
+                    Ext : no pitting edema 【Date : 】 2018-08-01 , 正子造影-全身<br />
+                    <br />
+                    1.Compatible with bulky malignancy at right lung , with liver and left inguinal<br />
+                    metastases ; also metastatic lymphadenopathy at right cervical level II , right<br />
+                    supra-clavicular , and mediastinal regions .<br />
+                    <br />
+                    Problem 01 Right small lung cancer , stage 4 T4N3M1a with superior vena cava syndrome<br />
+                    s/p chemotherapy with Ciplatin and Etoposide ; with progressive disease due to<br />
+                    multiple brain metastases on 2018.05 s/p pallative radiotherapy ; right femoral<br />
+                    neck metastasis on 2018.06 s/p chemotherapy with topotecan<br />
+                    <br />
+                    Assessment<br />
+                    <br />
+                    under chemotherapy one episode of vomiting this morning<br />
+                    <br />
+                    Plan<br />
+                    <br />
+                    -- - Therapeutic plan<br />
+                    <br />
+                    - Keep chemotherapy with Hycamtin D2 - Symptoms relief with Primperan and Vena<br />
+                    IVD - observation condition<br />
+                    <br />
+                    Problem 02 Type 2 diabetes mellitus<br />
+                    <br />
+                    Assessment<br />
+                    <br />
+                    - he had type 2 diabetes mellitus with regular control - HbA1c : 8.2 % on<br />
+                    2018.06.06 2018-08-01 05:15 F/S : 93mg/dl 2018-08-01 17:51 F/S:206mg/dl<br />
+                    2018-08-02 05:38 F/S:166mg/dl -well control<br />
+                    <br />
+                    Plan<br />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    const input = @Html.Raw(ViewBag.item);
+    const SBP_DBP = input.map((o) => ([Number(o.Time13), Number(o.SBP), Number(o.DBP)]))
+    const BT = input.map((o) => [Number(o.Time13), Number(o.BT_Max)])
+    const HR = input.map((o) => [Number(o.Time13), Number(o.HR)])
+    const RR = input.map((o) => [Number(o.Time13), Number(o.RR)])
+
+    const med_input = @Html.Raw(ViewBag.item2);
+    const TAZOI = med_input.map((o) => [Number(o.Time13), Number(o.Dose)])
+
+    const med_input2 = @Html.Raw(ViewBag.item3);
+    const TARGO = med_input2.map((o) => [Number(o.Time13), Number(o.Dose)])
+
+    const med_input3 = @Html.Raw(ViewBag.item4);
+    const MEPE2 = med_input3.map((o) => [Number(o.Time13), Number(o.Dose)])
+
+    const input_medrecord = @Html.Raw(ViewBag.item_MedRecord);
+    const record = input_medrecord.map((o) => [Number(o.Time13), Number(o.MedRecord_Content)])
+
+
+
+  Highcharts.stockChart('container', {
+
+    chart: {
+      type: 'columnrange'
+    },
+
+    rangeSelector: {
+      selected: 2
+    },
+
+    title: {
+      text: 'Hospital Electronic Medical Record'
+      },
+     subtitle: {
+        text: '病歷號: 7522260'
+    },
+
+    tooltip: {
+      //valueSuffix: '°C'
+    },
+
+    yAxis: [{
+      title: {
+        text: 'Blood pressure'
+        },
+          plotBands: [{
+        from: 80,
+        to: 120,
+        color: 'rgba(68, 170, 213, 0.2)'
+      }],
+
+      height: '50%',
+      lineWidth: 2
+    },
+        {
+      title: {
+        text: 'Temperature'
+            },
+            plotBands: [{
+        from: 36,
+        to: 37.4,
+        color: 'rgba(214, 240, 222, 0.2)'
+      }],
+        opposite: true,
+      height: '50%',
+      lineWidth: 2
+        },
+        {
+      title: {
+        text: 'Others'
+        },
+        opposite: true,
+      height: '50%',
+      lineWidth: 2
+    },
+
+        {
+      title: {
+        text: 'Dormicum'
+      },
+      top: '55%',
+      height: '10%',
+      offset: 0,
+      lineWidth: 2
+        },
+
+        {
+      title: {
+        text: 'MAXII'
+      },
+      top: '70%',
+      height: '10%',
+      offset: 0,
+      lineWidth: 2
+        },
+
+        {
+      title: {
+        text: 'NS5'
+      },
+      top: '85%',
+      height: '10%',
+      offset: 0,
+      lineWidth: 2
+    }
+      ],
+
+     plotOptions: {
+        series: {
+            cursor: 'pointer',
+            point: {
+                events: {
+                    click: function () {
+                        //alert('value:' + this.options.x);
+                        $("#exampleModal").modal('show');
+
+                        //document.getElementById("parentID").innerHTML += '<div>adsa</div><h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>';
+                        //location.href = 'https://en.wikipedia.org/wiki/';
+                        //location.href = 'https://en.wikipedia.org/wiki/' +
+                        //    this.options.key;
+                    }
+                }
+            }
+        }
+    },
+
+
+    series: [{
+
+        tooltip: {
+            valueSuffix: 'mmHg '
+        },
+        name: 'SBP/DBP:',
+        data: SBP_DBP
+            //[
+            // [new Date('2019/08/24 13:44:00').getTime(), 137, 72],
+            // [new Date('2019/08/24 17:47:00').getTime(), 150, 61],
+            // [new Date('2019/08/24 20:29:00').getTime(), 137, 62],
+            // [new Date('2019/08/25 08:57:00').getTime(), 144, 69],
+            // [new Date('2019/08/25 13:25:00').getTime(), 137, 67],
+            // [new Date('2019/08/25 17:21:00').getTime(), 150, 63],
+            // [new Date('2019/08/25 20:48:00').getTime(), 149, 74],
+            // [new Date('2019/08/26 08:50:00').getTime(), 157, 73]
+            //]
+    },
+        //放病歷點
+        {
+      type: 'flags',
+      data: [{
+        x: 1568960656000,
+        title: 'R',
+        //text: 'Shape: "circlepin"'
+      }, {
+        x:1569019213000,
+        title: 'R',
+        //text: 'Shape: "circlepin"'
+      }],
+
+      shape: 'circlepin',
+      width: 16
+    },
+
+        //溫度
+        {
+         tooltip: {
+            valueSuffix: ' ℃'
+        },
+      type: 'line',
+      name: 'BT',
+      data: BT
+    ,
+      yAxis: 1
+
+        }, {
+          tooltip: {
+            valueSuffix: ' 次/分 '
+        },
+      type: 'line',
+      name: 'HR',
+      data: HR
+     ,
+      yAxis: 2
+
+        }, {
+         tooltip: {
+            valueSuffix: ' 次/分 '
+        },
+      type: 'line',
+      name: 'RR',
+      data: RR
+     ,
+      yAxis: 2
+
+    }
+
+        , {
+                 tooltip: {
+            valueSuffix: ' MG '
+        },
+      type: 'column',
+      name: 'TAZOI',
+      data: TAZOI
+            ,
+      yAxis: 3
+        }
+        , {
+                 tooltip: {
+            valueSuffix: ' MG '
+        },
+      type: 'column',
+      name: 'TARGO',
+      data: TARGO
+            ,
+      yAxis: 4
+        }
+
+        , {
+                 tooltip: {
+            valueSuffix: ' MG '
+        },
+      type: 'column',
+      name: 'MEPE2',
+      data: MEPE2
+            ,
+      yAxis: 5
+        }
+
+            ]
+
+  });
+
+
+</script>

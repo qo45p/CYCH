@@ -1,0 +1,537 @@
+﻿
+@model IEnumerable<CY_Project.ViewModels.PresentViewModel>
+
+@{
+    ViewBag.title = "患者資料";
+
+}
+
+<div class="side-menu col-md-1" style="padding-top: 10px;">
+
+
+    <p style="color:rgb(59, 107, 91);font-size:large;font-weight: 900; margin-left:40px">藥物清單：<br /> (最多選五個)</p>
+
+    @{
+        var result = Model.GroupBy(x => x.MedPRS);
+    }
+
+    @* 藥物選單 *@
+
+    <div class="med_button" id="checkbox-container" style="margin-left:40px">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { id = "Get_MedList" })) //,onsubmit = "return numFunction()"
+        {
+
+            foreach (var item in result)
+            {
+                <nav>
+                    <input id="chbxId" type="checkbox" name="chbx" value="@item.Key" />
+
+                    @item.Key
+                </nav>
+
+            }
+
+            <button id="med-btn" class="btn btn-success">submit</button>
+            @*<button type="submit" id="med-btn" class="btn btn-success">submit</button>*@
+            @*<input type="submit" id="med-btn" class="btn btn-success" value="submit" />*@
+
+        }
+
+    </div>
+
+
+
+</div>
+
+
+
+
+@* 患者基本資料 *@
+<div id="section" class="col-md-11">
+    @*<div class="card info_card">
+            <div class="card-body row ">
+                <div class="col-md-3">姓名：</div>
+                <div class="col-md-3">性別：</div>
+                <div class="col-md-3">出生年月：</div>
+                <div class="col-md-3">年齡：</div>
+            </div>
+
+        </div>*@
+
+    @* 圖表區塊 *@
+    <div class="card content_card ">
+        @*<h5 class="card-header">Chart</h5>*@
+        <div class="card-body" id="card-body">
+            <div class="chart-area" id="container" style="min-width: 310px; height: 900px; margin: 0 auto">
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Modal 點擊內文 MedRecord-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Medical Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    //先判斷sessionStorage裡面是否有checkbox的Y/N值，有Y就把checkbox打勾
+    $(document).ready(function () {
+        $("input[name='chbx']").each(function () {
+            var isYorN = sessionStorage.getItem($(this).val());
+            if (isYorN == 'Y') {
+                $(this).prop('checked', true);
+                //用javascript或jQuery去打勾
+            }
+        });
+        sessionStorage.clear(); //處理完後將之清空
+    })
+
+    //記錄每一筆checkbox是否有被打勾
+     $(function(){
+        $("#med-btn").on("click",function(e){
+            e.preventDefault();
+
+            $("input[name='chbx']").each(function () {
+                if (this.checked) {
+                    sessionStorage.setItem($(this).val(), 'Y');
+                } else {
+                    sessionStorage.setItem($(this).val(), 'N');
+                }
+            });
+            console.log (sessionStorage.getItem($("input[name='chbx']").val()));
+        $("#Get_MedList").submit();
+    })
+    })
+
+
+
+    const input = @Html.Raw(ViewBag.item);
+    const SBP_DBP = input.map((o) => ([Number(o.Time13), Number(o.SBP), Number(o.DBP)]));
+    const BT = input.map((o) => [Number(o.Time13), Number(o.BT)]);
+    const BT_Null = input.map((o) => [Number(o.Time13), Number(o.BT_Null)]);
+    const HR = input.map((o) => [Number(o.Time13), Number(o.HR)]);
+    const RR = input.map((o) => [Number(o.Time13), Number(o.RR)]);
+    const medTime = @Html.Raw(ViewBag.item_medTime);
+    const P_ID = @Html.Raw(ViewBag.P_ID);
+
+
+
+    /*將每個藥物從 Med_Code 分出來 ，並儲存成 [[12345678,4000],[123456788,4000],....]的格式 */
+
+
+    var dictionary = @Html.Raw(ViewBag.item_MedDose);
+    var medlist = [];
+    var medUnitlist = [];
+    var medNamelist = [];
+
+    for (var key in dictionary) {
+        if (medlist.indexOf(dictionary[key]["MedPRS"]) >= 0) {
+            medlist = medlist;
+        } else {
+            medlist.push(dictionary[key]["MedPRS"]);
+            medUnitlist.push(dictionary[key]["DoseUnit"]);
+            medNamelist.push(dictionary[key]["MedPRS_Name"]);
+        }
+    }
+    //console.log(medlist);
+
+
+
+    //讀取med Name，將之使用動態變數
+    for (y = 0; y < 5; y++){ //medlist.length
+        if (medlist[y] != null) {
+            window['medName' + y] = medlist[y];
+            window['medUnit' + y] = medUnitlist[y];
+            window['medSName' + y] = medNamelist[y];
+
+            var xlist = [];
+            for (i = 0; i < Object.keys(dictionary).length; i++) {
+                for (var key in dictionary[i]) {
+                    if (dictionary[i][key] == medlist[y]) {
+                        var x = [dictionary[i]["Time13"], dictionary[i]["Dose"]];
+                        xlist.push(x.map(Number));
+                        window['medDose' + y] = xlist; //動態變數     medDose0, medDose1, medDose2
+                    }
+                }
+            }
+        } else {
+            window['medName' + y] = null;
+            window['medUnit' + y] = null;
+            window['medDose' + y] = null;
+            window['medSName' + y] = null;
+        }
+
+    }
+
+    //console.log(medName0)
+    //console.log(medDose0)
+    //console.log(medUnit0)
+    //console.log(medSName0)
+
+ var chart = Highcharts.stockChart('container', {
+
+    chart: {
+          type: 'columnrange',
+
+      },
+      //take off LOGO
+      credits: {
+          enabled: false
+    },
+      //設定zoom的範圍 [0,1,2,3....]對照[1d,3d,1w....]
+    rangeSelector: {
+      buttons: [{
+                type: 'hour',
+                count: 12,
+                text: '12H'
+            },{
+                type: 'day',
+                count: 1,
+                text: '1d'
+            },{
+                type: 'day',
+                count: 3,
+                text: '3d'
+            }, {
+                type: 'day',
+                count: 5,
+                text: '5d'
+            }, {
+                type: 'week',
+                count: 1,
+                text: '1w'
+            }, {
+                type: 'month',
+                count: 1,
+                text: '1m'
+            }, {
+                type: 'month',
+                count: 6,
+                text: '6m'
+            }, {
+                type: 'year',
+                count: 1,
+                text: '1y'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            selected: 2
+    },
+
+    title: {
+      text: '病歷號：' + P_ID
+      },
+
+
+    //設定時間軸的值
+    navigator: {
+        series: {
+            data: BT
+        },
+      },
+
+//種類點點
+        legend: {
+        enabled: true,
+        layout: 'horizontal',
+        align: 'right',
+        verticalAlign: 'right',
+        y: 425,
+        x: -400
+    },
+
+    //設定固定的x間隔
+    xAxis: {
+        ordinal: false,
+        tickInterval:  24 * 3600 * 1000, // one day
+    tickWidth: 0,
+    gridLineWidth: 1
+    },
+
+    yAxis: [{
+      title: {
+        text: 'Blood pressure'
+        },
+        min: 20,
+        max:240,
+        lineColor: "#3763D1",
+        lineWidth: 1,
+      height: '50%'
+    },
+        {
+      title: {
+        text: 'BT'
+            },
+            min: 35,
+            max:42,
+        lineColor: '#2BED2D',
+            //plotBands: [{
+            //from: 36,
+            //to: 37.4,
+            //color: 'rgba(214, 240, 222, 0.5)'
+            //}],
+        opposite: true,
+      height: '50%',
+      lineWidth: 2
+        },
+        {
+      title: {
+        text: 'HR'
+            },
+            min: 30,
+        max:130,
+            lineColor: "#FCA132",
+        //plotBands: [{
+        //    from: 60,
+        //    to: 100,
+        //    color: 'rgba(252, 152, 38, 0.2)'
+        //    }],
+        opposite: true,
+      height: '50%',
+      lineWidth: 2
+
+    },{
+      title: {
+        text: 'RR'
+            },
+        min:5,
+        max:40,
+           lineColor: "#8F38FC",
+        //plotBands: [{
+        //    from: 12,
+        //    to: 20,
+        //    color: 'rgba(183, 107, 219, 0.2)'
+        //    }],
+        opposite: true,
+      height: '50%',
+      lineWidth: 2
+
+    },
+
+        {
+      title: {
+        text: medName0
+      },
+      top: '55%',
+      height: '7%',
+      offset: 0, //軸偏移量
+      lineWidth: 2
+        },
+
+        {
+      title: {
+        text: medName1
+      },
+      top: '64.5%',
+      height: '7%',
+      offset: 0,
+      lineWidth: 2
+        },
+
+        {
+      title: {
+        text: medName2
+      },
+      top: '74%',
+      height: '7%',
+      offset: 0,
+      lineWidth: 2
+        },
+                {
+      title: {
+        text: medName3
+      },
+      top: '83.5%',
+      height: '7%',
+      offset: 0,
+      lineWidth: 2
+        },
+     {
+      title: {
+        text: medName4
+      },
+      top: '92%',
+      height: '7%',
+      offset: 0,
+      lineWidth: 2
+    }
+      ],
+
+     plotOptions: {
+         series: {
+             connectNulls: true,
+            cursor: 'pointer',
+            point: {
+                events: {
+                    click: function () {
+
+                        //alert("Time:" + this.x);
+
+                        $.ajax({
+                            url: '@Url.Action("SearchTime")',
+                            type: "POST",
+                            data: {
+                                Data: this.x
+                            },
+                            error: function (xhr) { // 錯誤後執行的函數
+                                alert('Ajax request 發生錯誤');
+                            },
+                            success: function (response) {  // 成功後執行的函數
+                                //alert(response);
+                                $('#modal-body').html(response);
+                                $("#exampleModal").modal('show');
+                            }
+                        });
+
+                    }
+                }
+            }
+        }
+    },
+
+
+      series: [{
+
+
+        tooltip: {
+            valueSuffix: 'mmHg '
+        },
+        name: 'SBP/DBP',
+        data: SBP_DBP,
+        pointWidth: 5
+
+        },
+        //放病歷點
+        {
+            type: 'flags',
+            name: 'medRecord',
+            data: medTime,
+            shape: 'circlepin',
+            width: 15
+        },
+
+        {
+            tooltip: {
+                valueSuffix: ' ℃'
+            },
+            type: 'line',
+            name: 'BT',
+            data: BT,
+            marker: {
+                enabled: true,
+                radius: 3
+            },
+
+            yAxis: 1
+        },
+        {
+            tooltip: {
+                valueSuffix: ' 次/分 '
+            },
+        type: 'line',
+        name: 'HR',
+        data: HR,
+        marker: {
+                enabled: true,
+                radius: 3
+            },
+
+        yAxis: 2
+
+        },
+        {
+            tooltip: {
+                valueSuffix: ' 次/分 '
+            },
+        type: 'line',
+        name: 'RR',
+        data: RR,
+        marker: {
+                enabled: true,
+                radius: 3
+            },
+        yAxis: 3
+        }
+
+        , {
+                 tooltip: {
+            valueSuffix: ' ' + medUnit0 //放單位
+        },
+      type: 'column',
+      name: medSName0,
+      data: medDose0 ,
+      pointWidth: 35,
+      yAxis: 4
+        }
+        , {
+                 tooltip: {
+            valueSuffix: ' ' + medUnit1
+        },
+      type: 'column',
+      name: medSName1,
+      data: medDose1,
+      pointWidth: 35,
+      yAxis: 5
+        }
+
+        , {
+                 tooltip: {
+            valueSuffix: ' ' + medUnit2
+        },
+      type: 'column',
+      name: medSName2,
+      data: medDose2 ,
+      pointWidth: 35,
+      yAxis: 6
+          }
+        , {
+                 tooltip: {
+            valueSuffix: ' ' + medUnit3
+        },
+      type: 'column',
+      name: medSName3,
+      data: medDose3 ,
+      pointWidth: 35,
+      yAxis: 7
+          }
+        , {
+                 tooltip: {
+            valueSuffix: ' ' + medUnit4
+        },
+      type: 'column',
+      name: medSName4,
+      data: medDose4 ,
+      pointWidth: 35,
+      yAxis: 8
+        }
+
+            ]
+
+  });
+
+
+</script>

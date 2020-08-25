@@ -1,0 +1,2 @@
+SearchPatient.cshtml 是我嘗試與之前不同的方法串接資料，使用List<Dictionary<string,Object>>的方法來串接尋出的資料
+並且新增SearchPatient的頁面，使用RedirectToAction的方法將頁面導到 Index_0430TesT 頁面

@@ -1,0 +1,624 @@
+﻿
+@{
+    ViewBag.Title = "TestDesign";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+
+    <aside class="left">
+        <div class="chb">
+            left
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件ㄅ1</p>
+            <p>條件2</p>
+            <p>條件3</p>
+            <p>條件4</p>
+            <p>條件5</p>
+            <p>條件6</p>
+            <p>條件7</p>
+            <p>條件8</p>
+            <p>條</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件</p>
+            <p>條件4</p>
+            <p>條件</p>
+
+        </div>
+        
+        <div class="chbButton ">     <button id="med-btn" class="btn btn-success">test-button</button>    </div>
+
+    </aside>
+<main class="right">
+    <div class="inner">
+        <div class="content">
+            <div class="container" id="container"  style="min-width: 310px; height: 900px; margin: 0 auto">
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件</p>
+                <p>條件ㄅ1</p>
+            </div>
+
+ 
+</main>
+
+
+<script>
+
+
+    /*將每個藥物劑量從 Med_Code 分出來 ，並儲存成 [[12345678,4000],[123456788,4000],....]的格式 */
+    //藥物劑量名單區分
+    var dictionary = @Html.Raw(ViewBag.item_Dose);
+    var medlist = ["MAXII","NS5","VANCO"];
+    //console.log(medlist.length)
+
+    for (y = 0; y < medlist.length; y++){
+
+        var xlist = [];
+        for (i = 0; i < Object.keys(dictionary).length; i++){
+            for (var key in dictionary[i]) {
+                if (dictionary[i][key] == medlist[y]) {
+                    var x = [dictionary[i]["Time13"], dictionary[i]["Dose"]];
+                    xlist.push(x.map(Number));
+                    window['medDose' + y] = xlist; //動態變數     med0, med1, med2
+                }
+            }
+        }
+    }
+
+    //console.log(medDose0)
+    //console.log(medDose1)
+
+
+
+    const input = @Html.Raw(ViewBag.item);
+    const SBP_DBP = input.map((o) => ([Number(o.Time13), Number(o.SBP), Number(o.DBP)]))
+    const BT = input.map((o) => [Number(o.Time13), Number(o.BT)])
+    const BT_Null = input.map((o) => [Number(o.Time13), Number(o.BT_Null)])
+    const HR = input.map((o) => [Number(o.Time13), Number(o.HR)])
+    const RR = input.map((o) => [Number(o.Time13), Number(o.RR)])
+
+
+
+    const input_medrecord = @Html.Raw(ViewBag.medRecord);
+
+
+
+
+
+
+    Highcharts.stockChart('container', {
+
+    chart: {
+      type: 'columnrange'
+        },
+        credits: {
+            enabled: false
+    },
+      //設定zoom的範圍 [0,1,2,3....]對照[1d,3d,1w....]
+    rangeSelector: {
+      buttons: [{
+                type: 'day',
+                count: 1,
+                text: '1d'
+            }, {
+                type: 'day',
+                count: 3,
+                text: '3d'
+            }, {
+                type: 'week',
+                count: 1,
+                text: '1w'
+            }, {
+                type: 'month',
+                count: 1,
+                text: '1m'
+            }, {
+                type: 'month',
+                count: 6,
+                text: '6m'
+            }, {
+                type: 'year',
+                count: 1,
+                text: '1y'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            selected: 5
+    },
+
+    title: {
+      text: 'Hospital Electronic Medical Record'
+      },
+     subtitle: {
+        text: '病歷號: 7522260'
+    },
+
+    tooltip: {
+      //valueSuffix: '°C'
+      },
+
+    //設定時間軸的值
+      navigator: {
+        series: {
+            data: BT
+        }
+    },
+
+    yAxis: [{
+      title: {
+        text: 'Blood pressure'
+        },
+
+      height: '50%',
+      lineWidth: 2
+    },
+        {
+      title: {
+        text: 'Temperature'
+            },
+            plotBands: [{
+        from: 36,
+        to: 37.4,
+        color: 'rgba(214, 240, 222, 0.5)'
+      }],
+        opposite: true,
+      height: '50%',
+      lineWidth: 2
+        },
+        {
+      title: {
+        text: 'Others'
+        },
+        opposite: true,
+      height: '50%',
+      lineWidth: 2
+    },
+
+        {
+      title: {
+        text: 'VANCO'
+      },
+      top: '55%',
+      height: '10%',
+      offset: 0, //軸偏移量
+      lineWidth: 2
+        },
+
+        {
+      title: {
+        text: 'MAXII'
+      },
+      top: '70%',
+      height: '10%',
+      offset: 0,
+      lineWidth: 2
+        },
+
+        {
+      title: {
+        text: 'NS5'
+      },
+      top: '85%',
+      height: '10%',
+      offset: 0,
+      lineWidth: 2
+    }
+      ],
+
+     plotOptions: {
+        series: {
+            cursor: 'pointer',
+            point: {
+                events: {
+                    click: function () {
+
+                        alert(this.x);
+
+
+                        $.ajax({
+                            url: '@Url.Action("SearchTime")',
+                            type: "POST",
+                            data: {
+                                Data: this.x
+                            },
+                            error: function (xhr) { // 錯誤後執行的函數
+                                alert('Ajax request 發生錯誤');
+                            },
+                            success: function (response) {  // 成功後執行的函數
+                                //alert(response);
+                                $('#modal-body').html(response);
+                                $("#exampleModal").modal('show');
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    },
+
+
+    series: [{
+
+        tooltip: {
+            valueSuffix: 'mmHg '
+        },
+        name: 'SBP/DBP',
+        data: SBP_DBP
+
+    },
+        //放病歷點
+        {
+      type: 'flags',
+            data: input_medrecord
+            ,
+
+      shape: 'circlepin',
+      width: 16
+    },
+        {
+         tooltip: {
+            valueSuffix: ' ℃'
+        },
+      type: 'line',
+      name: 'BT',
+            data: BT
+    ,
+      yAxis: 1
+
+        },
+ 
+        {
+          tooltip: {
+            valueSuffix: ' 次/分 '
+        },
+      type: 'line',
+      name: 'HR',
+      data: HR
+
+     ,
+      yAxis: 2
+
+        }, {
+         tooltip: {
+            valueSuffix: ' 次/分 '
+        },
+      type: 'line',
+      name: 'RR',
+      data: RR
+     ,
+      yAxis: 2
+
+    }
+
+        , {
+                 tooltip: {
+            valueSuffix: ' MG '
+        },
+      type: 'column',
+      name: 'VANCO',
+      data: medDose0 //放置動態變數
+            ,
+      yAxis: 3
+        }
+        , {
+                 tooltip: {
+            valueSuffix: ' MG '
+        },
+      type: 'column',
+      name: 'MAXII',
+      data: medDose1
+            ,
+      yAxis: 4
+        }
+
+        , {
+                 tooltip: {
+            valueSuffix: ' MG '
+        },
+      type: 'column',
+      name: 'NS5',
+      data: medDose2
+            ,
+      yAxis: 5
+        }
+
+            ]
+   });
+
+
+
+    Highcharts.stockChart('container2', {
+
+    chart: {
+      type: 'columnrange'
+    },
+      //設定zoom的範圍 [0,1,2,3....]對照[1d,3d,1w....]
+    rangeSelector: {
+      buttons: [{
+                type: 'day',
+                count: 1,
+                text: '1d'
+            }, {
+                type: 'day',
+                count: 3,
+                text: '3d'
+            }, {
+                type: 'week',
+                count: 1,
+                text: '1w'
+            }, {
+                type: 'month',
+                count: 1,
+                text: '1m'
+            }, {
+                type: 'month',
+                count: 6,
+                text: '6m'
+            }, {
+                type: 'year',
+                count: 1,
+                text: '1y'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            selected: 5
+    },
+
+    title: {
+      text: 'Hospital Electronic Medical Record'
+      },
+     subtitle: {
+        text: '病歷號: 7522260'
+    },
+
+    tooltip: {
+      //valueSuffix: '°C'
+      },
+
+    //設定時間軸的值
+      navigator: {
+        series: {
+            data: BT
+        }
+    },
+
+    yAxis: [{
+      title: {
+        text: 'Blood pressure'
+        },
+          plotBands: [{
+        from: 80,
+        to: 120,
+        color: 'rgba(68, 170, 213, 0.2)'
+      }],
+
+      height: '50%',
+      lineWidth: 2
+    },
+        {
+      title: {
+        text: 'Temperature'
+            },
+
+        opposite: true,
+      height: '50%',
+      lineWidth: 2
+        },
+        {
+      title: {
+        text: 'Others'
+        },
+        opposite: true,
+      height: '50%',
+      lineWidth: 2
+    },
+
+        {
+      title: {
+        text: 'VANCO'
+      },
+      top: '55%',
+      height: '10%',
+      offset: 0, //軸偏移量
+      lineWidth: 2
+        },
+
+        {
+      title: {
+        text: 'MAXII'
+      },
+      top: '70%',
+      height: '10%',
+      offset: 0,
+      lineWidth: 2
+        },
+
+        {
+      title: {
+        text: 'NS5'
+      },
+      top: '85%',
+      height: '10%',
+      offset: 0,
+      lineWidth: 2
+    }
+      ],
+
+     plotOptions: {
+        series: {
+            cursor: 'pointer',
+            point: {
+                events: {
+                    click: function () {
+
+                        alert(this.x);
+
+
+                        $.ajax({
+                            url: '@Url.Action("SearchTime")',
+                            type: "POST",
+                            data: {
+                                Data: this.x
+                            },
+                            error: function (xhr) { // 錯誤後執行的函數
+                                alert('Ajax request 發生錯誤');
+                            },
+                            success: function (response) {  // 成功後執行的函數
+                                //alert(response);
+                                $('#modal-body').html(response);
+                                $("#exampleModal").modal('show');
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    },
+
+
+    series: [{
+
+        tooltip: {
+            valueSuffix: 'mmHg '
+        },
+        name: 'SBP/DBP',
+        data: SBP_DBP
+
+    },
+        //放病歷點
+        {
+      type: 'flags',
+            data: input_medrecord
+            ,
+
+      shape: 'circlepin',
+      width: 16
+    },
+        {
+         tooltip: {
+            valueSuffix: ' ℃'
+        },
+      type: 'line',
+      name: 'BT',
+            data: BT
+    ,
+      yAxis: 1
+
+        },
+    //    {
+    //     tooltip: {
+    //     //enableTooltip : false
+
+    //         formatter: function () {
+    //        // The first returned item is the header, subsequent items are the
+    //        // point
+
+
+    //        if (this.points[0].y == 71.5){
+    //        	return false
+    //        }
+    //        else{
+
+    //        	return ['<b>' + this.x + '</b>'].concat(
+    //            this.points ?
+    //                this.points.map(function (point) {
+    //                    return point.series.name + ': ' + point.y + 'm';
+    //                }) : []
+    //        );
+    //        }
+
+
+    //    },
+    //    shared: true
+    //    },
+    //  type: 'line',
+    //  name: 'BT_Null',
+    //        data: BT_Null,
+    //        color: 'rgba(255,255,255,0.2)'
+    //,
+    //  yAxis: 1
+
+    //    },
+        {
+          tooltip: {
+            valueSuffix: ' 次/分 '
+        },
+      type: 'line',
+      name: 'HR',
+      data: HR
+
+     ,
+      yAxis: 2
+
+        }, {
+         tooltip: {
+            valueSuffix: ' 次/分 '
+        },
+      type: 'line',
+      name: 'RR',
+      data: RR
+     ,
+      yAxis: 2
+
+    }
+
+        , {
+                 tooltip: {
+            valueSuffix: ' MG '
+        },
+      type: 'column',
+      name: 'VANCO',
+      data: medDose0 //放置動態變數
+            ,
+      yAxis: 3
+        }
+        , {
+                 tooltip: {
+            valueSuffix: ' MG '
+        },
+      type: 'column',
+      name: 'MAXII',
+      data: medDose1
+            ,
+      yAxis: 4
+        }
+
+        , {
+                 tooltip: {
+            valueSuffix: ' MG '
+        },
+      type: 'column',
+      name: 'NS5',
+      data: medDose2
+            ,
+      yAxis: 5
+        }
+
+            ]
+   });
+
+    function bloodFunction() {
+        document.getElementById("container").setAttribute = ('id','container2');
+    }
+</script>

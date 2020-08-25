@@ -1,0 +1,343 @@
+﻿@model IEnumerable<CY_Project.ViewModels.PresentViewModel>
+    @*<div>@ViewBag.item</div>*@
+<div class="chart-area" id="container" style="min-width: 310px; height: 900px; margin: 0 auto">
+    
+    Search頁面
+</div>
+
+
+
+<script>
+    @*const input = @Html.Raw(ViewBag.item);
+    const SBP_DBP = input.map((o) => ([Number(o.Time13), Number(o.SBP), Number(o.DBP)]))*@
+
+     @*var dictionary = @Html.Raw(ViewBag.item_MedDose);
+    //var medlist = ["MAXII","NS5","VANCO"];
+    var medlist = [];
+
+    for (var key in dictionary) {
+        if (medlist.indexOf(dictionary[key]["MedPRS"]) >= 0) {
+            medlist = medlist;
+        } else {
+            medlist.push(dictionary[key]["MedPRS"]);
+        }      
+    } console.log(medlist);
+
+
+    for (y = 0; y < medlist.length; y++){
+
+        var xlist = [];        
+        for (i = 0; i < Object.keys(dictionary).length; i++){            
+            for (var key in dictionary[i]) {
+                if (dictionary[i][key] == medlist[y]) {
+                    var x = [dictionary[i]["Time13"], dictionary[i]["Dose"]];  
+                    xlist.push(x.map(Number));
+                    window['medDose' + y] = xlist; //動態變數     med0, med1, med2
+                }
+            }        
+        }        
+    }*@
+
+    @*$(function () {
+        $('#med-btn').on('click', function () {
+            var str = "";
+            $('.med-btn').each(function () {
+                //抓ID或name
+                str += "" //你需要的資料格式
+            })
+            if (str == "" || str == null) {
+                $.ajax({
+                    url: '@Url.Action("SearchUser")',  //導向 HomeController得SearchUser
+                    data: {
+                        Data: str
+                    },
+                    error: function (xhr) {
+                        alert('Ajax request 發生錯誤');
+                    },
+                    success: function (response) {
+                        $('#container').html(response);
+                    }
+                });
+            }
+
+        })
+    })
+
+    function getChart(str) {
+        str = "";//撈出全部資料
+         $.ajax({
+                    url: '@Url.Action("SearchUser")',
+                    data: {
+                        Data: ""
+                    },
+                    error: function (xhr) {
+                        alert('Ajax request 發生錯誤');
+                    },
+                    success: function (response) {
+                        $('#container').html(response);
+                    }
+                });
+    }*@
+
+
+
+
+
+    // Create the chart
+    Highcharts.stockChart('container', {
+        rangeSelector: {
+            selected: 1
+        },
+
+        title: {
+            text: 'AAPL Stock Price'
+        },
+
+        series: [{
+            name: 'AAPL',
+            data: medDose1,
+            tooltip: {
+                valueDecimals: 2
+            }
+        }]
+    });
+
+
+  //Highcharts.stockChart('container', {
+
+  //  chart: {
+  //    type: 'columnrange'
+  //  },
+  //    //設定zoom的範圍 [0,1,2,3....]對照[1d,3d,1w....]
+  //  rangeSelector: {
+  //    buttons: [{
+  //              type: 'day',
+  //              count: 1,
+  //              text: '1d'
+  //          }, {
+  //              type: 'day',
+  //              count: 3,
+  //              text: '3d'
+  //          }, {
+  //              type: 'week',
+  //              count: 1,
+  //              text: '1w'
+  //          }, {
+  //              type: 'month',
+  //              count: 1,
+  //              text: '1m'
+  //          }, {
+  //              type: 'month',
+  //              count: 6,
+  //              text: '6m'
+  //          }, {
+  //              type: 'year',
+  //              count: 1,
+  //              text: '1y'
+  //          }, {
+  //              type: 'all',
+  //              text: 'All'
+  //          }],
+  //          selected: 3
+  //  },
+
+  //  title: {
+  //    text: 'Hospital Electronic Medical Record'
+  //    },
+  //   subtitle: {
+  //      text: '病歷號: 7522260'
+  //  },
+
+  //  tooltip: {
+  //    //valueSuffix: '°C'
+  //    },
+
+  //  //設定時間軸的值
+  //    navigator: {
+  //      series: {
+  //          data: BT
+  //      }
+  //  },
+
+  //  yAxis: [{
+  //    title: {
+  //      text: 'Blood pressure'
+  //      },
+  //        plotBands: [{
+  //      from: 80,
+  //      to: 120,
+  //      color: 'rgba(68, 170, 213, 0.2)'
+  //    }],
+
+  //    height: '50%',
+  //    lineWidth: 2
+  //  },
+  //      {
+  //    title: {
+  //      text: 'Temperature'
+  //          },
+  //          plotBands: [{
+  //      from: 36,
+  //      to: 37.4,
+  //      color: 'rgba(214, 240, 222, 0.5)'
+  //    }],
+  //      opposite: true,
+  //    height: '50%',
+  //    lineWidth: 2
+  //      },
+  //      {
+  //    title: {
+  //      text: 'Others'
+  //      },
+  //      opposite: true,
+  //    height: '50%',
+  //    lineWidth: 2
+  //  },
+
+  //      {
+  //    title: {
+  //      text: 'VANCO'
+  //    },
+  //    top: '55%',
+  //    height: '10%',
+  //    offset: 0, //軸偏移量
+  //    lineWidth: 2
+  //      },
+
+  //      {
+  //    title: {
+  //      text: 'MAXII'
+  //    },
+  //    top: '70%',
+  //    height: '10%',
+  //    offset: 0,
+  //    lineWidth: 2
+  //      },
+
+  //      {
+  //    title: {
+  //      text: 'NS5'
+  //    },
+  //    top: '85%',
+  //    height: '10%',
+  //    offset: 0,
+  //    lineWidth: 2
+  //  }
+  //    ],
+
+  //   plotOptions: {
+  //      series: {
+  //          cursor: 'pointer',
+  //          point: {
+  //              events: {
+  //                  click: function () {
+  //                      $("#exampleModal").modal('show');
+  //                      //document.getElementById("parentID").innerHTML += '<div>adsa</div><h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>';
+  //                      //location.href = 'https://en.wikipedia.org/wiki/';
+  //                      //location.href = 'https://en.wikipedia.org/wiki/' +
+  //                      //    this.options.key;
+  //                  }
+  //              }
+  //          }
+  //      }
+  //  },
+
+
+  //  series: [{
+
+  //      tooltip: {
+  //          valueSuffix: 'mmHg '
+  //      },
+  //      name: 'SBP/DBP',
+  //      data: SBP_DBP
+
+  //  },
+  //      //放病歷點
+  //      {
+  //    type: 'flags',
+  //    data: [{
+  //      x: 1568960656000,
+  //      title: 'R',
+  //      //text: 'Shape: "circlepin"'
+  //    }, {
+  //      x:1569019213000,
+  //      title: 'R',
+  //      //text: 'Shape: "circlepin"'
+  //    }],
+
+  //    shape: 'circlepin',
+  //    width: 16
+  //  },
+  //      {
+  //       tooltip: {
+  //          valueSuffix: ' ℃'
+  //      },
+  //    type: 'line',
+  //    name: 'BT',
+  //          data: BT
+  //  ,
+  //    yAxis: 1
+
+  //      },
+
+  //      {
+  //        tooltip: {
+  //          valueSuffix: ' 次/分 '
+  //      },
+  //    type: 'line',
+  //    name: 'HR',
+  //    data: HR
+
+  //   ,
+  //    yAxis: 2
+
+  //      }, {
+  //       tooltip: {
+  //          valueSuffix: ' 次/分 '
+  //      },
+  //    type: 'line',
+  //    name: 'RR',
+  //    data: RR
+  //   ,
+  //    yAxis: 2
+
+  //  }
+
+  //      , {
+  //               tooltip: {
+  //          valueSuffix: ' MG '
+  //      },
+  //    type: 'column',
+  //    name: 'VANCO',
+  //    data: medDose0
+  //          ,
+  //    yAxis: 3
+  //      }
+  //      , {
+  //               tooltip: {
+  //          valueSuffix: ' MG '
+  //      },
+  //    type: 'column',
+  //    name: 'MAXII',
+  //    data: medDose1
+  //          ,
+  //    yAxis: 4
+  //      }
+
+  //      , {
+  //               tooltip: {
+  //          valueSuffix: ' MG '
+  //      },
+  //    type: 'column',
+  //    name: 'NS5',
+  //    data: medDose2
+  //          ,
+  //    yAxis: 5
+  //      }
+
+  //          ]
+
+  //});
+
+</script>
+

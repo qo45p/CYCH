@@ -1,0 +1,243 @@
+﻿
+
+
+
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>CY Hospita - @ViewBag.Title</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    @* jQuery 引用 *@
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    @* highstock CDN  *@
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+
+    <link rel="icon" href="~/Content/LOGO/CYCH2.ico" type="image/ico" />
+
+</head>
+
+<!-- <input type="checkbox" name="" id="side-menu-switch"> -->
+
+<body>
+    <header>
+        <div class="header-area ">
+            <div class="header-top_area d-none d-lg-block">
+                <div>
+                    <div class="row align-items-center">
+                        <div class="col-xl-4 col-lg-4">
+                            <div class="logo">
+                                <a href="@Url.Action("SearchPatient","Home")">
+                                    <img  src="~/Content/LOGO/CY_LOGO.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </header>
+
+    <!-- Main Content -->
+    <div class="row" id="content">
+        @RenderBody()
+        @*<div class="side-menu col-md-2">
+
+            <form class="row">
+                <input type="search" class="col-md-10" placeholder="請輸入關鍵字">
+                <button class="col-md-2"><i class="fas fa-search"></i></button>
+            </form>
+            <nav>*@
+        @*<div>
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                    Default checkbox
+                </label>
+            </div>
+
+            <div>
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+                <label class="form-check-label" for="defaultCheck2">
+                    Default checkbox2
+                </label>
+            </div>*@
+        @*</nav>
+                <label for="side-menu-switch">
+                    <i class="fas fa-angle-right"></i>
+                </label>
+            </div>
+
+            <div id="section" class="col-md-10">
+                <div class="card content_card ">
+                    <h5 class="card-header">Chart</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                    </div>
+                </div>
+            </div>*@
+
+    </div>
+    <!-- End of Main Content -->
+
+    <footer class="footer">
+        <div class="footer_border"></div>
+        <p class="copy_right text-center">
+            <!-- Link back to Colorlib can't be removed. CY Hospital is licensed under CC BY 3.0. -->
+            Copyright &copy; 2020 All rights reserved | This Web is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="http://www.cych.org.tw/cychweb/cych3/default.aspx" target="_blank">CYCH</a>
+            <!-- Link back to Colorlib can't be removed. CY Hospital is licensed under CC BY 3.0. -->
+        </p>
+    </footer>
+</body>
+
+
+
+
+</html>
+
+<style>
+    .row{
+        margin-left:0px;
+        margin-right:0px;
+    }
+
+    .info_card {
+        margin-top: 10px;
+        margin-right: 30px;
+        margin-left: 30px;
+    }
+
+    .content_card {
+        margin: 30px;
+        width: 600;
+        box-shadow: 1px 0px 10px rgba(187, 190, 190, 0.4);
+        border-radius: 10px 10px 10px 10px;
+    }
+
+    html,
+    body {
+        height: 100%;
+        font-family: sans-serif, "微軟正黑體";
+    }
+
+
+
+    .header-area .header-top_area {
+        padding: 10px 0;
+        background: rgb(109, 146, 134);
+        border-bottom: 1px solid #EAEAEA;
+        
+    }
+
+
+    img {
+        vertical-align: middle;
+        border-style: none;
+        width: 250px;
+    }
+
+
+    .side-menu {
+        position: relative;
+        width: 250px;
+        /* height: 100%; */
+        padding: 50px 0;
+        box-sizing: border-box;
+        background-image: linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255));
+        display: flex;
+        flex-direction: column;
+        box-shadow: 5px 0px 10px rgba(48, 54, 52, 0.4);
+        transform: translateX(0);
+        transition: .3s;
+    }
+
+
+    #search {
+        display: flex;
+        margin: 0 10px 20px;
+        border-radius: 100px;
+        border: 1px solid rgb(40, 175, 130);
+    }
+
+    #search_input,
+    #search_btn {
+        border: none;
+        color: rgb(40, 175, 130);
+        background-color: transparent;
+        padding: 5px 20px;
+    }
+
+    #search_input {
+        width: 185px;
+    }
+
+    #search_btn {
+        width: 3px;
+    }
+
+        /* not display input frame */
+        #search_input:focus,
+        #search_btn:focus {
+            outline: none;
+        }
+
+    .side-menu label {
+        position: absolute;
+        width: 40px;
+        height: 80px;
+        background-color: rgb(2, 58, 41);
+        color: rgb(40, 175, 130);
+        right: -40px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        line-height: 80px;
+        text-align: center;
+        font-size: 30px;
+        border-radius: 0 10px 10px 0;
+    }
+
+    ::placeholder {
+        color: rgb(40, 175, 130);
+        opacity: 1;
+        /* Firefox */
+    }
+
+    .footer {
+        width: 100%;
+    }
+
+    .footer_border {
+        border-top: 1px solid #E8E8E8;
+        padding-bottom: 30px;
+    }
+</style>

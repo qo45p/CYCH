@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    @* jQuery 引用 *@
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    @* highstock CDN  *@
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+
+    <title>一般布局</title>
+    <style>
+        html,
+        body,
+        .parent {
+            /*不能有缝隙*/
+            margin: 0;
+            /*将页面进行撑开*/
+            height: 100%;
+            /*隐藏溢出元素*/
+            overflow: hidden;
+            font-family: sans-serif, "微軟正黑體";
+        }
+
+        .header {
+            position: absolute;
+            /*上边距和上内边距之和零*/
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: #68a08b;
+        }
+
+        .left {
+            position: absolute;
+            left: 0;
+            top: 50px;
+            bottom: 60px;
+            width: 150px;
+            /* background: red; */
+            overflow: auto;
+            box-shadow: 1px 0px 10px rgba(187, 190, 190, 0.4);
+        }
+
+        .right {
+            position: absolute;
+            left: 150px;
+            top: 50px;
+            bottom: 20px;
+            right: 0;
+            border-width:1px;
+            /*对溢出元素，可以以滚动条方式显示*/
+            overflow: auto;
+        }
+
+            /*.right .inner {
+                min-height: auto;
+            }*/
+
+        .bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 20px;
+            font-size: 8px;
+            text-align: center;
+            border-top: 1px solid #E8E8E8;
+        }
+
+        .content {
+            border-radius: 15px;
+            box-shadow: 1px 0px 10px rgba(187, 190, 190, 0.4);
+            margin: 15px;
+        }
+
+        .container {
+            padding: 15px;
+            border-radius: 15px;
+            /* background:rgba(187, 190, 190, 0.4); */
+        }
+
+        .chb {
+            top: 50px;
+            bottom: 40px;
+            padding-top: 15px;
+            padding-left: 15px;
+            /* overflow: auto; */
+        }
+
+        .chbButton {
+            width: 150px;
+            position: fixed;
+            left: 0px;
+            right: 0px;
+            bottom: 20px;
+            height: 40px;
+            border-top: 1px solid #E8E8E8;
+            box-shadow: 0px 5px 60px rgba(187, 190, 190, 0.4);
+        }
+
+        .logo {
+            padding: 5px;
+            height: 100%;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <header class="header">
+            <div class="logo">
+            <a href="@Url.Action("SearchPatient","Home")">
+                <img style="height:100%;" src="~/Content/LOGO/CY_LOGO.png" alt="">
+            </a>
+            </div>
+        </header>
+        <div>
+            @RenderBody()
+ 
+        </div>
+
+        <footer class="bottom">
+            <p class="copy_right text-center">
+                <!-- Link back to Colorlib can't be removed. CY Hospital is licensed under CC BY 3.0. -->
+                Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script> All rights reserved | This Web is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="http://www.cych.org.tw/cychweb/cych3/default.aspx" target="_blank">CYCH</a>
+                <!-- Link back to Colorlib can't be removed. CY Hospital is licensed under CC BY 3.0. -->
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
+
